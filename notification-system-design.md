@@ -1,28 +1,40 @@
 # Notification System Design
 
-# Stage 1 
+## Overview
+
+The Campus Notification System is used to send important notifications to students such as placement updates, event announcements, exam results and other college notices. The following APIs can be used by the frontend to manage notifications.
+
+---
+
+# Stage 1
 
 ## Headers
 
+All APIs require the following headers.
+
 ```http
-Authorization:Bearer <token>
-Content-type: application/json
+Authorization: Bearer <token>
+Content-Type: application/json
 ```
 
 ---
 
-## list of API
+## API List
 
-1. Get all Notifications
+1. Get All Notifications
 2. Get Notification by ID
-3. create Notification
+3. Create Notification
 4. Mark Notification as Read
 5. Delete Notification
 6. Mark All Notifications as Read
 7. Get Notifications by Type
 8. Get Unread Notifications Count
 
+---
+
 # 1. Get All Notifications
+
+This API is used to fetch all notifications.
 
 ### Method
 
@@ -36,7 +48,7 @@ Content-type: application/json
 
 ### Request
 
-No request body.
+No request body is required.
 
 ### Response
 
@@ -57,6 +69,8 @@ No request body.
 
 # 2. Get Notification by ID
 
+This API is used to fetch a particular notification using its ID.
+
 ### Method
 
 `GET`
@@ -69,7 +83,7 @@ No request body.
 
 ### Request
 
-No request body
+No request body is required.
 
 ### Response
 
@@ -85,6 +99,8 @@ No request body
 ---
 
 # 3. Create Notification
+
+This API is used to create a new notification.
 
 ### Method
 
@@ -117,6 +133,8 @@ No request body
 
 # 4. Mark Notification as Read
 
+This API is used to mark a notification as read.
+
 ### Method
 
 `PATCH`
@@ -129,7 +147,7 @@ No request body
 
 ### Request
 
-No request body .
+No request body is required.
 
 ### Response
 
@@ -143,6 +161,8 @@ No request body .
 
 # 5. Delete Notification
 
+This API is used to delete a notification.
+
 ### Method
 
 `DELETE`
@@ -155,7 +175,7 @@ No request body .
 
 ### Request
 
-No request body .
+No request body is required.
 
 ### Response
 
@@ -169,6 +189,8 @@ No request body .
 
 # 6. Mark All Notifications as Read
 
+This API is used to mark all notifications as read.
+
 ### Method
 
 `PUT`
@@ -181,7 +203,7 @@ No request body .
 
 ### Request
 
-No request body .
+No request body is required.
 
 ### Response
 
@@ -195,6 +217,8 @@ No request body .
 
 # 7. Get Notifications by Type
 
+This API is used to get notifications based on their type.
+
 ### Method
 
 `GET`
@@ -207,7 +231,7 @@ No request body .
 
 ### Request
 
-No request body.
+No request body is required.
 
 ### Response
 
@@ -228,6 +252,8 @@ No request body.
 
 # 8. Get Unread Notifications Count
 
+This API is used to get the number of unread notifications.
+
 ### Method
 
 `GET`
@@ -240,7 +266,7 @@ No request body.
 
 ### Request
 
-No request body.
+No request body is required.
 
 ### Response
 
@@ -248,4 +274,94 @@ No request body.
 {
   "unreadCount": "<count>"
 }
+```
+
+---
+
+# Stage 2 - Database Design
+
+## 1. Database Selection
+
+I would use **PostgreSQL** because it is reliable, secure and suitable for storing notification data. It also supports SQL queries and indexing, which helps in retrieving notifications quickly.
+
+---
+
+## 2. Database Schema
+
+**Database:** PostgreSQL
+
+**Table Name:** `Notifications`
+
+| Column Name | Data Type | Description |
+|-------------|-----------|-------------|
+| ID | UUID | Unique notification ID |
+| Type | VARCHAR(50) | Type of notification |
+| Message | TEXT | Notification message |
+| IsRead | BOOLEAN | Shows whether the notification is read or not |
+| Timestamp | TIMESTAMP | Date and time of notification |
+
+---
+
+## 3. Challenges
+
+When the number of notifications increases:
+
+- Database size increases.
+- Queries become slower.
+- Searching and sorting notifications take more time.
+
+---
+
+## 4. Solutions
+
+To improve performance:
+
+- Create indexes.
+- Use pagination.
+- Archive old notifications.
+
+---
+
+## 5. SQL Queries
+
+### Get All Notifications
+
+```sql
+SELECT * FROM Notifications;
+```
+
+### Get Notification by ID
+
+```sql
+SELECT * FROM Notifications
+WHERE ID = '<notification_id>';
+```
+
+### Get Notifications by Type
+
+```sql
+SELECT * FROM Notifications
+WHERE Type = 'Placement';
+```
+
+### Get Unread Notifications
+
+```sql
+SELECT * FROM Notifications
+WHERE IsRead = FALSE;
+```
+
+### Mark Notification as Read
+
+```sql
+UPDATE Notifications
+SET IsRead = TRUE
+WHERE ID = '<notification_id>';
+```
+
+### Delete Notification
+
+```sql
+DELETE FROM Notifications
+WHERE ID = '<notification_id>';
 ```
