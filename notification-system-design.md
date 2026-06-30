@@ -360,3 +360,34 @@ WHERE ID = '<notification_id>';
 DELETE FROM Notifications
 WHERE ID = '<notification_id>';
 ```
+
+
+
+
+# Stage 3 - Query Optimization
+
+## 1. Why is the query slow?
+ The query can become slow when there are more records in the table.so ,everytime i has to search entire db to get desired result.
+
+ ## 2. Indexing Strategy
+
+I would create an index on the columns that are frequently used for searching and sorting.
+
+```sql
+CREATE INDEX idx_notifications
+ON Notifications (Type, IsRead, Timestamp);
+```
+
+This helps the database find the required notifications faster.
+
+---
+
+## 3. Should every column have an index?
+
+No.
+
+Creating indexes on every column is not a good idea because:
+
+- It increases storage space.
+- Only frequently searched columns should have indexes.
+
