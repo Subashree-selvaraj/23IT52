@@ -1,10 +1,5 @@
 # Notification System Design
 
-## Overview
-
-The Campus Notification System is used to send important notifications to students such as placement updates, event announcements, exam results and other college notices. The following APIs can be used by the frontend to manage notifications.
-
----
 
 # Stage 1
 
